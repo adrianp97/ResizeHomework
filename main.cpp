@@ -50,11 +50,13 @@ public:
     BEGIN_MSG_MAP(MainWindow)
         MESSAGE_HANDLER(WM_CREATE, OnCreate)
         MESSAGE_HANDLER(WM_PAINT, OnPaint)
+        MESSAGE_HANDLER(WM_SIZE, OnResize)
         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
     END_MSG_MAP()
 
     LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);
     LRESULT OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);
+    LRESULT OnResize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);
     LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);
 };
 
@@ -77,6 +79,14 @@ LRESULT MainWindow::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHand
     ValidateRect(nullptr);
     return 0;
 
+}
+
+LRESULT MainWindow::OnResize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
+{
+    RECT rect;
+    GetClientRect(&rect);
+    _childWindow.ResizeClient(rect.right - rect.left - 20, rect.bottom - rect.top - 20);
+    return 0;
 }
 
 LRESULT MainWindow::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
